@@ -1,17 +1,15 @@
 package com.animefront.frontinet.Services;
 
-import com.app.animesinventory.Entities.AnimeEntity;
-import com.app.animesinventory.Repositories.AnimesRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import com.animefront.frontinet.Repositories.AnimesRepository;
+import com.animefront.frontinet.Entities.AnimeEntity;
+
+import java.util.*;
 
 
 @Service
@@ -27,7 +25,7 @@ public class AnimesService {
         return getResponseEntity(anime);
     }
 
-    public ResponseEntity<?> getAnimeById(String id) {
+    public ResponseEntity<?> getAnimeById(UUID id) {
         Optional<AnimeEntity> anime = animesRepository.findById(id);
         if (anime.isEmpty()) {
             Map<String, Object> response = new HashMap<>();
@@ -64,7 +62,7 @@ public class AnimesService {
         }
     }
 
-    public ResponseEntity<?> updateAnime(String id, AnimeEntity animeToUpdate) {
+    public ResponseEntity<?> updateAnime(UUID id, AnimeEntity animeToUpdate) {
         Optional<AnimeEntity> anime = animesRepository.findById(id);
         if (anime.isEmpty()) {
             return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Anime with ID %s not found", id)), HttpStatus.NOT_FOUND);
@@ -80,7 +78,7 @@ public class AnimesService {
         return ResponseEntity.ok(Collections.singletonMap("Status", String.format("Updated Anime with ID %s", existingAnime.getId())));
     }
 
-    public ResponseEntity<?> deleteAnime(String id) {
+    public ResponseEntity<?> deleteAnime(UUID id) {
         Optional<AnimeEntity> anime = animesRepository.findById(id);
         if (anime.isEmpty()) {
             return new ResponseEntity<>(Collections.singletonMap("Status", String.format("Anime with ID %s doesn't exist.", id)),HttpStatus.NOT_FOUND);
