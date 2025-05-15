@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nuevo Anime</title>
+</head>
+<body>
+<h1>Agregar Nuevo Anime</h1>
+
+<form th:action="@{/web/animes}" th:object="${anime}" method="post">
+    <label>Nombre:</label>
+    <input type="text" th:field="*{animeName}" required/><br/>
+
+    <label>Año:</label>
+    <input type="text" th:field="*{animeYear}" required/><br/>
+
+    <label>Capítulos:</label>
+    <input type="number" th:field="*{animeCaps}" required/><br/>
+
+    <button type="submit">Guardar</button>
+</form>
+
+<br/>
+<a th:href="@{/web/animes}">Volver a la lista</a>
+</body>
+</html>

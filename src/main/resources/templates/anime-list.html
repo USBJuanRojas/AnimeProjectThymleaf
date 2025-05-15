@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Animes</title>
+    <meta charset="UTF-8">
+    <style>
+        .active {
+            font-weight: bold;
+            color: red;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 10px;
+            padding: 0;
+        }
+        nav a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<h1>Lista de Animes</h1>
+
+<a th:href="@{/web/animes/new}">Agregar nuevo anime</a>
+<br/><br/>
+
+<!-- Tabla -->
+<table border="1">
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Año</th>
+        <th>Capítulos</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="anime : ${animes}">
+        <td th:text="${anime.animeName}">Nombre</td>
+        <td th:text="${anime.animeYear}">Año</td>
+        <td th:text="${anime.animeCaps}">Capítulos</td>
+        <td>
+            <a th:href="@{/web/animes/update/{id}(id=${anime.id})}">Editar</a> |
+            <a th:href="@{/web/animes/delete/{id}(id=${anime.id})}" onclick="return confirm('¿Eliminar anime?')">Eliminar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Paginación -->
+<br/>
+<div>
+    <span th:text="'Página ' + (${currentPage} + 1) + ' de ' + ${totalPages}"></span>
+
+    <nav>
+        <ul>
+            <li th:if="${currentPage > 0}">
+                <a th:href="@{|/web/animes?page=${currentPage - 1}&size=${size}&sort=${sort}|}">← Anterior</a>
+            </li>
+
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                <a th:href="@{|/web/animes?page=${i}&size=${size}&sort=${sort}|}"
+                   th:text="${i + 1}"
+                   th:classappend="${i == currentPage} ? 'active' : ''">1</a>
+            </li>
+
+            <li th:if="${currentPage < totalPages - 1}">
+                <a th:href="@{|/web/animes?page=${currentPage + 1}&size=${size}&sort=${sort}|}">Siguiente →</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<br/>
+<a th:href="@{/}">Volver al inicio</a>
+</body>
+</html>
